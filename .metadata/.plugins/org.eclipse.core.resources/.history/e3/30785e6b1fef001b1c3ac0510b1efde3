@@ -1,0 +1,234 @@
+package Gui;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import java.awt.Toolkit;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import Arreglos.ArregloAlumnos;
+import Arreglos.ArregloCurso;
+import Clases.Alumno;
+import Clases.Curso;
+public class ConsultaAluCurso extends JDialog implements ActionListener {
+
+	private final JPanel contentPanel = new JPanel();
+	private JTextField txtCodAlu;
+	private JLabel lblCodigoCurso;
+	private JTextField txtCodCur;
+	private JButton btnConsultarCurso;
+	private JScrollPane scrollPane;
+	private JTextArea txtA;
+	private JButton btnConsultar;
+	
+	ArregloCurso ac=new ArregloCurso();
+	ArregloAlumnos aa=new ArregloAlumnos();
+	private JButton btnLimpiar;
+	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		try {
+			ConsultaAluCurso dialog = new ConsultaAluCurso();
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Create the dialog.
+	 */
+	public ConsultaAluCurso() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ConsultaAluCurso.class.getResource("/Gui/img/estudiar.png")));
+		setTitle("Consulta | Alumo - Curso");
+		setBounds(100, 100, 457, 474);
+		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setLayout(null);
+		{
+			JLabel lblIngreseCodigo = new JLabel("Cod. Alumno");
+			lblIngreseCodigo.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 13));
+			lblIngreseCodigo.setBounds(10, 42, 94, 14);
+			contentPanel.add(lblIngreseCodigo);
+		}
+		{
+			txtCodAlu = new JTextField();
+			txtCodAlu.setBounds(124, 39, 132, 20);
+			contentPanel.add(txtCodAlu);
+			txtCodAlu.setColumns(10);
+		}
+		{
+			btnConsultar = new JButton("Consultar Alumno");
+			btnConsultar.addActionListener(this);
+			btnConsultar.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 13));
+			btnConsultar.setBounds(266, 38, 160, 23);
+			contentPanel.add(btnConsultar);
+		}
+		
+		lblCodigoCurso = new JLabel("Cod. Curso");
+		lblCodigoCurso.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 13));
+		lblCodigoCurso.setBounds(10, 73, 94, 14);
+		contentPanel.add(lblCodigoCurso);
+		
+		txtCodCur = new JTextField();
+		txtCodCur.setBounds(124, 70, 132, 20);
+		contentPanel.add(txtCodCur);
+		txtCodCur.setColumns(10);
+		
+		btnConsultarCurso = new JButton("Consultar Curso");
+		btnConsultarCurso.addActionListener(this);
+		btnConsultarCurso.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 13));
+		btnConsultarCurso.setBounds(266, 72, 160, 23);
+		contentPanel.add(btnConsultarCurso);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 104, 423, 288);
+		contentPanel.add(scrollPane);
+		
+		txtA = new JTextArea();
+		txtA.setBounds(10, 106, 421, 286);
+		contentPanel.add(txtA);
+		txtA.setFont(new Font("Yu Gothic Medium", Font.PLAIN, 15));
+		
+		btnLimpiar = new JButton("LIMPIAR");
+		btnLimpiar.addActionListener(this);
+		btnLimpiar.setBounds(169, 401, 89, 23);
+		contentPanel.add(btnLimpiar);
+	}
+	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == btnLimpiar) {
+			actionPerformedBtnLimpiar(arg0);
+		}
+		if (arg0.getSource() == btnConsultarCurso) {
+			actionPerformedBtnConsultarCurso(arg0);
+		}
+		if (arg0.getSource() == btnConsultar) {
+			actionPerformedBtnConsultar(arg0);
+		}
+	}
+	protected void actionPerformedBtnConsultar(ActionEvent arg0) {
+		int codAlumno = leerCodAlumno();
+		Alumno a = aa.buscar(codAlumno);
+		if(a.getEstado()==1){
+			imprimir("Codigo de Alumno : "+a.getCodAlumno());
+			imprimir("Nombres : "+a.getNombres());
+			imprimir("Apellidos : "+a.getApellidos());
+			imprimir("Dni : "+a.getDni());
+			imprimir("Edad : "+a.getEdad());
+			imprimir("Celular : "+a.getCelular());}
+			/*imprimir("=========================");
+			imprimir("Codigo Curso: "+c.getCodigoAsignatura());
+			imprimir("Ciclo: "+c.getCiclo());
+			imprimir("Creditos: "+c.getNroCreditos());
+			imprimir("Horas: "+c.getCantHoras());}*/
+			
+		
+			
+		
+		/*try {
+			if(leerCodAlumno()>0){
+				int codAlumno= leerCodAlumno();
+				Alumno a = aa.buscar(codAlumno);
+				Curso c=ac.buscar(leerCodCurso());
+				if(a.getEstado()==1){
+					imprimir("Codigo de Alumno : "+a.getCodAlumno());
+					imprimir("Nombres : "+a.getNombres());
+					imprimir("Apellidos : "+a.getApellidos());
+					imprimir("Dni : "+a.getDni());
+					imprimir("Edad : "+a.getEdad());
+					imprimir("Celular : "+a.getCelular());
+					imprimir("=========================");
+					imprimir("Codigo Curso: "+c.getCodigoAsignatura());
+					imprimir("Ciclo: "+c.getCiclo());
+					imprimir("Creditos: "+c.getNroCreditos());
+					imprimir("Horas: "+c.getCantHoras());
+				}
+				else if(a!=null){
+					imprimir("Codigo de Alumno : "+a.getCodAlumno());
+					imprimir("Nombres : "+a.getNombres());
+					imprimir("Apellidos : "+a.getApellidos());
+					imprimir("Dni : "+a.getDni());
+					imprimir("Edad : "+a.getEdad());
+					imprimir("Celular : "+a.getCelular());
+					if(a.getEstado()==1){
+						
+					}
+				}else{mensaje("CODIGO no existe");
+				}
+			}else{mensaje("ingrese CODIGO correcto");
+			 }
+		} catch (Exception e) {
+			error("CODIGO errado",txtCodCur);
+		}*/
+	}
+	int leerCodAlumno(){
+		return Integer.parseInt(txtCodAlu.getText().trim());
+	}
+	int leerCodCurso(){
+		return Integer.parseInt(txtCodCur.getText().trim());
+	}
+	void limpiar(){
+		txtA.setText("");
+	}
+	void imprimir(String s){
+		txtA.append(s+"\n");
+	}
+
+	void error(String s, JTextField txt) {
+		mensaje(s);
+		txt.setText("");
+		txt.requestFocus();
+	}
+	void mensaje(String s) {
+		JOptionPane.showMessageDialog(this, s, "Información", 0);
+	}
+	
+	protected void actionPerformedBtnConsultarCurso(ActionEvent arg0) {
+		
+		try {
+			if(leerCodCurso()>0){
+				int codCurso= leerCodCurso();
+				Curso c = ac.buscar(codCurso);
+				if(c!=null){
+					imprimir("Codigo Curso: "+c.getCodigoAsignatura());
+					imprimir("Ciclo: "+c.getCiclo());
+					imprimir("Creditos: "+c.getNroCreditos());
+					imprimir("Horas: "+c.getCantHoras());}
+				else{mensaje("CODIGO no existe");}
+			}else{
+				mensaje("ingrese CODIGO correcto");
+			}
+			
+		} catch (Exception e) {
+			error("CODIGO errado",txtCodCur);
+		}
+		
+		
+		
+		
+		
+	
+
+		
+	}
+	protected void actionPerformedBtnLimpiar(ActionEvent arg0) {
+		txtA.setText("");
+	}
+}//FIN DE CLASE
+		
+
